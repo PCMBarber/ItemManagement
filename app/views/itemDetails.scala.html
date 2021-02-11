@@ -1,13 +1,14 @@
-@(item: Item)(itemForm: Form[ItemForm])
+@(item: Item)(form: Form[Item])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @main("Item Details") {
 <h1>@item.getName()</h1>
-@helper.form(routes.HomeController.editItem) {
+@helper.form(routes.EditController.editItem) {
     <div class="fill text-center">
-        @helper.inputText(form(name), '_label -> "ItemName", '_showConstraints -> false)
-        @helper.inputText(form(imgURL), '_label -> "ImgURL", '_showConstraints -> false)
-        @helper.inputText(form(description), '_label -> "Description", '_showConstraints -> false)
-        @helper.inputText(form(price), '_label -> "Price", '_showConstraints -> false)
+        @helper.inputText(form("name"), '_label -> "ItemName", '_showConstraints -> false)
+        @helper.inputText(form("imgURL"), '_label -> "ImgURL", '_showConstraints -> false)
+        @helper.inputText(form("description"), '_label -> "Description", '_showConstraints -> false)
+        @helper.inputText(form("price"), '_label -> "Price", '_showConstraints -> false)
         <button class="btn btn-primary" type="submit">Submit Changes</button>
     </div>
+}
 }

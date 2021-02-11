@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
 @Singleton
-class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with I18nSupport {
 
   def index = Action.async {
     ItemDAO.readAll map {
@@ -21,29 +21,12 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
       }
   }
 
-  def deleteItem(id: Int) = Action.async { implicit request =>
-    ItemDAO.delete(id) map{
+  def deleteItem(id: String) = Action.async { implicit request =>
+    ItemDAO.delete(id.toInt) map{
       result => Redirect("/")
     } recover {
       case e: Exception =>
         InternalServerError("database failed")
-    }
-  }
-
-  def editItem = Action { implicit request =>
-    ItemForm.itemForm.bindFromRequest.fold({ _ =>
-      Redirect("/")
-    }, { widget =>
-      edit(widget)
-      Redirect("/")
-    })
-  }
-  def edit(item: Item): Unit = {
-    ItemDAO update(item) onComplete {
-      case Success(value) =>
-        println(value)
-      case Failure(exception) =>
-        exception.printStackTrace()
     }
   }
 
