@@ -1,0 +1,18 @@
+@(itemList: Seq[Item])
+
+@main("Items") {
+<h1>All Items</h1>
+
+<div class="film-flex-container">
+    @for(item <- itemList) {
+    <a href='/itemdetails/@(item.getId)' class="item-panel">
+        <h3>@item.getName()</h3>
+        <img width="150" height="200" src="@item.getImgUrl()"/>
+        <h5>@item.getDescription()</h5>
+        <h5>£@item.getPrice()</h5>
+    </a>
+    <a href='/deleteitem/@(item.getId)'>Delete Item</a>
+    }
+</div>
+</br> </br>
+}
